@@ -63,9 +63,10 @@ jobs:
           version="${version#v}"
           stable_archive="blackboard-${{ matrix.target }}.${{ matrix.archive_ext }}"
           versioned_archive="blackboard-${version}-${{ matrix.target }}.${{ matrix.archive_ext }}"
-          mkdir -p dist
-          cp "target/release/${{ matrix.binary }}" dist/
-          tar -czf "$stable_archive" -C dist "${{ matrix.binary }}"
+          mkdir -p dist/blackboard
+          cp "target/release/${{ matrix.binary }}" dist/blackboard/blackboard
+          cp plugin.toml dist/blackboard/plugin.toml
+          tar -czf "$stable_archive" -C dist blackboard
           cp "$stable_archive" "$versioned_archive"
 
       - name: Package Windows archive
@@ -75,9 +76,10 @@ jobs:
           $version = "${{ github.event.inputs.version || github.ref_name }}".TrimStart("v")
           $stableArchive = "blackboard-${{ matrix.target }}.${{ matrix.archive_ext }}"
           $versionedArchive = "blackboard-$version-${{ matrix.target }}.${{ matrix.archive_ext }}"
-          New-Item -ItemType Directory -Force -Path dist | Out-Null
-          Copy-Item "target/release/${{ matrix.binary }}" "dist/${{ matrix.binary }}"
-          Compress-Archive -Path "dist/${{ matrix.binary }}" -DestinationPath $stableArchive
+          New-Item -ItemType Directory -Force -Path dist/blackboard | Out-Null
+          Copy-Item "target/release/${{ matrix.binary }}" "dist/blackboard/blackboard.exe"
+          Copy-Item plugin.toml "dist/blackboard/plugin.toml"
+          Compress-Archive -Path "dist/blackboard" -DestinationPath $stableArchive
           Copy-Item $stableArchive $versionedArchive
 
       - name: Upload artifact
@@ -107,3 +109,4 @@ jobs:
           name: ${{ github.event.inputs.version || github.ref_name }}
           files: artifacts/*
           fail_on_unmatched_files: true
+          overwrite_files: true
