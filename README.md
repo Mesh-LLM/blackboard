@@ -3,6 +3,12 @@
 Blackboard is an external mesh-llm plugin for sharing ephemeral status,
 findings, questions, and tips across a mesh.
 
+## Install
+
+```bash
+mesh-llm plugins install blackboard
+```
+
 ## Build
 
 ```bash
