@@ -24,18 +24,21 @@ jobs:
         include:
           - name: linux-x86_64
             os: ubuntu-latest
-            binary: mesh-llm-plugin-blackboard
-            archive: mesh-llm-plugin-blackboard-linux-x86_64.tar.gz
+            binary: blackboard
+            target: x86_64-unknown-linux-gnu
+            archive_ext: tar.gz
             package: tar
           - name: macos-aarch64
             os: macos-14
-            binary: mesh-llm-plugin-blackboard
-            archive: mesh-llm-plugin-blackboard-macos-aarch64.tar.gz
+            binary: blackboard
+            target: aarch64-apple-darwin
+            archive_ext: tar.gz
             package: tar
           - name: windows-x86_64
             os: windows-latest
-            binary: mesh-llm-plugin-blackboard.exe
-            archive: mesh-llm-plugin-blackboard-windows-x86_64.zip
+            binary: blackboard.exe
+            target: x86_64-pc-windows-msvc
+            archive_ext: zip
             package: zip
 
     steps:
@@ -56,23 +59,34 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          version="${{ github.event.inputs.version || github.ref_name }}"
+          version="${version#v}"
+          stable_archive="blackboard-${{ matrix.target }}.${{ matrix.archive_ext }}"
+          versioned_archive="blackboard-${version}-${{ matrix.target }}.${{ matrix.archive_ext }}"
           mkdir -p dist
           cp "target/release/${{ matrix.binary }}" dist/
-          tar -czf "${{ matrix.archive }}" -C dist "${{ matrix.binary }}"
+          tar -czf "$stable_archive" -C dist "${{ matrix.binary }}"
+          cp "$stable_archive" "$versioned_archive"
 
       - name: Package Windows archive
         if: matrix.package == 'zip'
         shell: pwsh
         run: |
+          $version = "${{ github.event.inputs.version || github.ref_name }}".TrimStart("v")
+          $stableArchive = "blackboard-${{ matrix.target }}.${{ matrix.archive_ext }}"
+          $versionedArchive = "blackboard-$version-${{ matrix.target }}.${{ matrix.archive_ext }}"
           New-Item -ItemType Directory -Force -Path dist | Out-Null
           Copy-Item "target/release/${{ matrix.binary }}" "dist/${{ matrix.binary }}"
-          Compress-Archive -Path "dist/${{ matrix.binary }}" -DestinationPath "${{ matrix.archive }}"
+          Compress-Archive -Path "dist/${{ matrix.binary }}" -DestinationPath $stableArchive
+          Copy-Item $stableArchive $versionedArchive
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.archive }}
-          path: ${{ matrix.archive }}
+          name: blackboard-${{ matrix.target }}
+          path: |
+            blackboard-*.tar.gz
+            blackboard-*.zip
           if-no-files-found: error
 
   publish:

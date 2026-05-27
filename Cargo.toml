@@ -1,6 +1,6 @@
 [package]
-name = "mesh-llm-plugin-blackboard"
-version = "0.1.0"
+name = "blackboard"
+version = "0.1.1"
 edition = "2024"
 license = "Apache-2.0"
 description = "Blackboard collaboration plugin for mesh-llm"

@@ -1,4 +1,4 @@
-# mesh-llm blackboard plugin
+# blackboard
 
 Blackboard is an external mesh-llm plugin for sharing ephemeral status,
 findings, questions, and tips across a mesh.
@@ -24,7 +24,7 @@ The plugin currently depends on the `mesh-llm-plugin` crate from the
 ```toml
 [[plugin]]
 name = "blackboard"
-command = "mesh-llm-plugin-blackboard"
+command = "blackboard"
 ```
 
 Once configured, mesh-llm routes the plugin CLI command through `cli.run`:

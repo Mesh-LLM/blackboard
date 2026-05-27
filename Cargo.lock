@@ -122,6 +122,25 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c4512299f36f043ab09a583e57bceb5a5aab7a73db1805848e8fef3c9e8c78b3"
 
 [[package]]
+name = "blackboard"
+version = "0.1.1"
+dependencies = [
+ "anyhow",
+ "biip",
+ "clap",
+ "dirs",
+ "mesh-llm-plugin",
+ "regex-lite",
+ "reqwest",
+ "rmcp",
+ "schemars",
+ "serde",
+ "serde_json",
+ "tempfile",
+ "tokio",
+]
+
+[[package]]
 name = "bumpalo"
 version = "3.20.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -922,25 +941,6 @@ dependencies = [
  "schemars",
  "serde",
  "serde_json",
- "tokio",
-]
-
-[[package]]
-name = "mesh-llm-plugin-blackboard"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "biip",
- "clap",
- "dirs",
- "mesh-llm-plugin",
- "regex-lite",
- "reqwest",
- "rmcp",
- "schemars",
- "serde",
- "serde_json",
- "tempfile",
  "tokio",
 ]
 
