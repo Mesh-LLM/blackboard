@@ -66,6 +66,7 @@ jobs:
           mkdir -p dist/blackboard
           cp "target/release/${{ matrix.binary }}" dist/blackboard/blackboard
           cp plugin.toml dist/blackboard/plugin.toml
+          cp -R skills dist/blackboard/skills
           tar -czf "$stable_archive" -C dist blackboard
           cp "$stable_archive" "$versioned_archive"
 
@@ -79,6 +80,7 @@ jobs:
           New-Item -ItemType Directory -Force -Path dist/blackboard | Out-Null
           Copy-Item "target/release/${{ matrix.binary }}" "dist/blackboard/blackboard.exe"
           Copy-Item plugin.toml "dist/blackboard/plugin.toml"
+          Copy-Item skills "dist/blackboard/skills" -Recurse
           Compress-Archive -Path "dist/blackboard" -DestinationPath $stableArchive
           Copy-Item $stableArchive $versionedArchive
 
