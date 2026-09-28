@@ -11,7 +11,7 @@ anyhow = "1"
 biip = "0.9.2"
 clap = { version = "4", features = ["derive"] }
 dirs = "6.0.0"
-mesh-llm-plugin = { git = "https://github.com/Mesh-LLM/mesh-llm.git", branch = "codex/plugin-cli-commands" }
+mesh-llm-plugin = { git = "https://github.com/Mesh-LLM/mesh-llm.git", rev = "4ae1ace57dbbe28d0c3d10a05ee542328e8e64e7" }
 regex-lite = "0.1"
 reqwest = { version = "0.12", features = ["json"] }
 rmcp = { version = "1.2", features = ["server", "transport-io"] }
